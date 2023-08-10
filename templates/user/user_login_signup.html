@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login/Signup</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% set last_message = messages[-1] %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ last_message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    {% endwith %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Signup</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <form method="post" action="{{ url_for('user_login') }}" class="needs-validation" novalidate>
+                                <div class="form-group">
+                                    <label for="user-username">Username</label>
+                                    <input type="text" class="form-control" id="user-username" name="user_username" required>
+                                    <!-- <div class="invalid-feedback">
+                                        Please enter your username.
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-password">Password</label>
+                                    <input type="password" class="form-control" id="user-password" name="user_password" required>
+                                    <!-- <div class="invalid-feedback">
+                                        Please enter your password.
+                                    </div> -->
+                                </div>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                            <form method="post" action="{{ url_for('user_signup') }}" class="needs-validation" novalidate>
+                                <div class="form-group">
+                                    <label for="user-signup-username">Username</label>
+                                    <input type="text" class="form-control" id="user-signup-username" name="user_signup_username" required>
+                                    <!-- <div class="invalid-feedback">
+                                        Please choose a username.
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-signup-password">Password</label>
+                                    <input type="password" class="form-control" id="user-signup-password" name="user_signup_password" required minlength="8">
+                                    <!-- <div class="invalid-feedback">
+                                        Please enter a password with at least 8 characters.
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-signup-password-confirm">Confirm Password</label>
+                                    <input type="password" class="form-control" id="user-signup-password-confirm" name="user_signup_password_confirm" required>
+                                    <!-- <div class="invalid-feedback">
+                                        Please confirm your password.
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-date-of-birth">Date of Birth</label>
+                                    <input type="date" class="form-control" id="user-date-of-birth" name="user_date_of_birth" required>
+                                    <!-- <div class="invalid-feedback">
+                                        Please enter your date of birth.
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="user_gender" id="user-gender-male" value="male" required>
+                                            <label class="form-check-label" for="user-gender-male">Male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="user_gender" id="user-gender-female" value="female" required>
+                                            <label class="form-check-label" for="user-gender-female">Female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="user_gender" id="user-gender-other" value="other" required>
+                                            <label class="form-check-label" for="user-gender-other">Other</label>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="invalid-feedback">
+                                        Please select your gender.
+                                    </div> -->
+                                </div>
+                                <button type="submit" class="btn btn-primary">Signup</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

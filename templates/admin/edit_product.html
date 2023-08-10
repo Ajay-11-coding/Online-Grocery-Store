@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Product</title>
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            margin-right: 1rem;
+        }
+
+        .btn-secondary {
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% set last_message = messages[-1] %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ last_message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <!-- Grocery Store App Name -->
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">GROCERY STORE</a>
+
+        <!-- Logout Link -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <h1>Edit Product</h1>
+
+        <form method="POST" action="{{ url_for('edit_product', product_id=product.id) }}" class="mt-4">
+            <div class="form-group row">
+                <label for="product_name" class="col-sm-2 col-form-label">Product Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.name }}"required>
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="unit" class="col-sm-2 col-form-label">Unit:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="unit" name="unit" required>
+                        <option value="Rs">Rs</option>
+                        <option value="Rs/kg">Rs/kg</option>
+                        <option value="Rs/litre">Rs/litre</option>
+                        <option value="Rs/dozen">Rs/dozen</option>
+                        <option value="Rs/gram">Rs/gram</option>
+                    </select>
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="rate_per_unit" class="col-sm-2 col-form-label">Rate per Unit:</label>
+                <div class="col-sm-10">
+                    <input type="number" step="0.1" class="form-control" id="rate_per_unit" name="rate_per_unit" value="{{ product.rate_per_unit }}"required>
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="quantity" class="col-sm-2 col-form-label">Quantity:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="quantity" name="quantity" value="{{ product.quantity}}"required>
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                    <a href="{{ url_for('section_dashboard', section_id=product.section.id) }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+        
+        
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Admin Dashboard</a>
+    </div>
+
+    <!-- Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+Admin login and user login -> done
+CRUD operations and management on sections -> done
+CRUD operations and management on products -> done
+Buy products from one or multiple sections -> done
+Search for Sections/products -> done
+Ability to add multiple products in a cart -> done
+Display all the products available for a given category to the users -> done
+Ability to buy multiple products from one or multiple sections -> done
+Ability to show out of stock for the products that are not available -> done 
+Ability to show the total amount to be paid for the transaction -> done
+
+
+
+CRUD operations on sections using API -> done
+CRUD operations on products using API -> done
+

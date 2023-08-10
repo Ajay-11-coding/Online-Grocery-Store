@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Section</title>
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            width: 180px;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-success {
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% set last_message = messages[-1] %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ last_message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <!-- Grocery Store App Name -->
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">GROCERY STORE</a>
+
+        <!-- Logout Link -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <h1>Edit Section</h1>
+        <form method="POST" action="{{ url_for('edit_section', section_id=section.id) }}" class="mb-4">
+            <div class="form-group">
+                <label for="section_name">Section Name:</label>
+                <input type="text" class="form-control" id="section_name" name="section_name" value="{{ section.name }}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Save Section</button>
+        </form>
+        
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Admin Dashboard</a>
+    </div>
+
+    <!-- Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

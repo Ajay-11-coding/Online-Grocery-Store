@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Style for the container */
+        .container {
+            margin-top: 30px;
+        }
+
+        /* Style for the card */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        /* Style for the card title */
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Style for the card text */
+        .card-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Style for the form group */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style for the form label */
+        .form-label {
+            font-size: 16px;
+            font-weight: bold;
+            min-width: 150px;
+            margin-right: 20px;
+            color: #666;
+        }
+
+        /* Style for the form control */
+        .form-control {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        /* Style for the form submit button */
+        .btn-primary {
+            margin-right: 10px;
+        }
+
+        /* Style for the "Back to Dashboard" button */
+        .btn-secondary {
+            background-color: #777;
+            border-color: #777;
+        }
+
+        /* Hover effect on buttons */
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .quantity-input {
+        width: 100px; 
+    }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% set last_message = messages[-1] %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ last_message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    {% endwith %}
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{ url_for('user_dashboard') }}">GROCERY STORE</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('cart') }}">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Buying {{ product.name }}</h1>
+                <div class="form-group">
+                    <div class="form-label">Unit:</div>
+                    <div class="card-text">{{ product.unit }}</div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Rate per unit:</div>
+                    <div class="card-text">Rs. {{ product.rate_per_unit }}</div>
+                </div>
+                <div class="form-group">
+                  <div class="form-label">Status:</div>
+                  <div class="card-text">In Stock | Available Quantity: {{ product.quantity }}</div>
+              </div>
+
+                <form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <div class="form-group">
+                        <label class="form-label" for="quantity_{{ product.id }}">Quantity:</label>
+                        <input class="form-control quantity-input" type="number" name="quantity" id="quantity_{{ product.id }}" data-product="{{ product.rate_per_unit }}" min="0" max="{{ product.quantity }}" value="0" onchange="updateTotal('{{ product.id }}')" oninput="updateTotal('{{ product.id }}')">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">Price:</div>
+                        <div class="card-text">{{ product.rate_per_unit }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">Total:</div>
+                        <div class="card-text"><span id="total_{{ product.id }}">0.0</span></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Buy</button>
+                </form>
+                <br>
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quantityInputs = document.querySelectorAll('input[name="quantity"]');
+        quantityInputs.forEach(input => {
+            const productId = input.getAttribute('data-product');
+            input.addEventListener('change', () => updateTotal(productId));
+        });
+
+        function updateTotal(productId) {
+            const quantity = parseFloat(document.getElementById(`quantity_${productId}`).value);
+            const ratePerUnit = parseFloat(document.getElementById(`quantity_${productId}`).getAttribute('data-product'));
+            const totalElement = document.getElementById(`total_${productId}`);
+            const total = (quantity * ratePerUnit).toFixed(2); // Calculate total and fix to 2 decimal places
+            totalElement.innerText = total;
+        }
+    </script>
+
+    <!-- Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+fileName: GroceryStoreAPI
+contents: >
+  openapi: 3.0.0
+
+  info:
+    version: 1.0.0
+    title: Grocery Store API
+    description: |
+      <h2>API for managing sections and products in a grocery store app</h2>
+
+      <h3>Section Resource Errors</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Error Code</th>
+            <th>Error Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SE1001</td>
+            <td>Section not found.</td>
+          </tr>
+          <tr>
+            <td>SE1002</td>
+            <td>Section name is required and should be a string.</td>
+          </tr>
+          <td>SE1003</td>
+            <td>Section cannot be deleted with products inside.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Product Resource Errors</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Error Code</th>
+            <th>Error Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PR1001</td>
+            <td>Product not found.</td>
+          </tr>
+          <tr>
+            <td>PR1002</td>
+            <td>Product name is required and should be a string.</td>
+          </tr>
+          <tr>
+            <td>PR1003</td>
+            <td>Product unit is required and should be a string.</td>
+          </tr>
+          <tr>
+            <td>PR1004</td>
+            <td>Product rate per unit is required and should be a number.</td>
+          </tr>
+          <tr>
+            <td>PR1005</td>
+            <td>Product quantity is required and should be an integer.</td>
+          </tr>
+          <tr>
+            <td>PR1006</td>
+            <td>Product section_id is required and should be an integer.</td>
+          </tr>
+        </tbody>
+      </table>
+  servers:
+    - url: http://localhost:5000
+  paths:
+    /api/section/{section_id}:
+      get:
+        summary: Get a section by ID
+        parameters:
+          - in: path
+            name: section_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the section to retrieve
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Section'
+          '404':
+            description: Section not found
+
+      put:
+        summary: Update a section by ID
+        parameters:
+          - in: path
+            name: section_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the section to update
+        requestBody:
+          description: Section object to update
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionUpdate'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Section'
+          '400':
+            description: Bad request
+          '404':
+            description: Section not found
+
+      delete:
+        summary: Delete a section by ID
+        parameters:
+          - in: path
+            name: section_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the section to delete
+        responses:
+          '200':
+            description: Successful response
+          '404':
+            description: Section not found
+
+    /api/section:
+      post:
+        summary: Create a new section
+        requestBody:
+          description: Section object to create
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionCreate'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Section'
+          '400':
+            description: Bad request
+
+    /api/product/{product_id}:
+      get:
+        summary: Get a product by ID
+        parameters:
+          - in: path
+            name: product_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the product to retrieve
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Product'
+          '404':
+            description: Product not found
+
+      put:
+        summary: Update a product by ID
+        parameters:
+          - in: path
+            name: product_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the product to update
+        requestBody:
+          description: Product object to update
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductUpdate'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Product'
+          '400':
+            description: Bad request
+          '404':
+            description: Product not found
+
+      delete:
+        summary: Delete a product by ID
+        parameters:
+          - in: path
+            name: product_id
+            required: true
+            schema:
+              type: integer
+            description: ID of the product to delete
+        responses:
+          '200':
+            description: Successful response
+          '404':
+            description: Product not found
+
+    /api/product:
+      post:
+        summary: Create a new product
+        requestBody:
+          description: Product object to create
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreate'
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Product'
+          '400':
+            description: Bad request
+
+  components:
+    schemas:
+      Section:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          admin_id:
+            type: integer
+
+      SectionCreate:
+        type: object
+        properties:
+          name:
+            type: string
+          admin_id:
+            type: integer
+
+      SectionUpdate:
+        type: object
+        properties:
+          name:
+            type: string
+
+      Product:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          unit:
+            type: string
+          rate_per_unit:
+            type: number
+          quantity:
+            type: integer
+          section_id:
+            type: integer
+
+      ProductCreate:
+        type: object
+        properties:
+          name:
+            type: string
+          unit:
+            type: string
+          rate_per_unit:
+            type: number
+          quantity:
+            type: integer
+          section_id:
+            type: integer
+
+      ProductUpdate:
+        type: object
+        properties:
+          name:
+            type: string
+          unit:
+            type: string
+          rate_per_unit:
+            type: number
+          quantity:
+            type: integer
+          section_id:
+            type: integer
+contentType: yaml
+_type: api_spec

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      /* Style for the container */
+      .container {
+          margin-top: 30px;
+      }
+
+      /* Style for the card */
+      .card {
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          padding: 15px;
+      }
+
+      /* Style for the card title */
+      .card-title {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 15px;
+      }
+
+      /* Style for the card text */
+      .card-text {
+          font-size: 16px;
+          color: #333;
+          margin-bottom: 10px;
+      }
+
+      /* Style for the form group */
+      .form-group {
+          margin-bottom: 20px;
+      }
+
+      /* Style for the form control */
+      .form-control {
+          font-size: 16px;
+          padding: 10px;
+      }
+
+      /* Style for the form submit button */
+      .btn-primary {
+          margin-right: 10px;
+      }
+
+      /* Style for the "Back to Dashboard" button */
+      .btn-secondary {
+          background-color: #777;
+          border-color: #777;
+      }
+
+      /* Style for the delete button */
+      .btn-danger {
+          margin-left: 10px;
+      }
+
+      /* Style for the grand total alert */
+      .alert-info {
+          font-size: 18px;
+          font-weight: bold;
+          padding: 10px;
+          text-align: center;
+      }
+
+      /* Hover effect on buttons */
+      .btn:hover {
+          opacity: 0.8;
+      }
+  </style>
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% set last_message = messages[-1] %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ last_message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+  {% endwith %}
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url_for('user_dashboard') }}">GROCERY STORE</a>
+    <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('cart') }}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container">
+        <h1>Cart</h1>
+        {% if cart_items %}
+          <div class="row">
+            {% for item in cart_items %}
+              <div class="col-md-4">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.product.section.name }} - {{ item.product.name }}</h5>
+                    <p class="card-text">Quantity: {{ item.quantity }}</p>
+                    <p class="card-text">Rate per unit: {{ item.product.rate_per_unit }}</p>
+                    <p class="card-text">Price: {{ item.total_price}}</p>
+                    <!-- Add edit and delete buttons for each product in the cart -->
+                    <a href="{{ url_for('edit_cart_product', product_id=item.product_id) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ url_for('delete_cart_product', product_id=item.product_id) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div><br>
+          <div class="alert alert-info mt-3">
+            Grand Total: {{ grand_total }}
+          </div>
+          <br>
+          <form method="POST" action="{{ url_for('cart') }}">
+            <button type="submit" class="btn btn-primary">Checkout</button>
+          </form>
+          <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+        {% else %}
+          <p>Your cart is empty.</p>
+          <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+        {% endif %}
+      </div>
+
+<!-- Bootstrap JS scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
